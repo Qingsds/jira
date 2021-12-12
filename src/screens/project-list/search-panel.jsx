@@ -1,6 +1,7 @@
 import React from "react";
 
 const SearchPanel = ({ users, param, setParam }) => {
+  
   return (
     <form>
       <div>
