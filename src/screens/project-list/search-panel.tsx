@@ -1,7 +1,17 @@
 import React from "react";
+import { Param, User } from ".";
 
-const SearchPanel = ({ users, param, setParam }) => {
-  
+interface SearchPanelProps {
+  users: User[];
+  param: Param;
+  setParam: (value: Param) => void;
+}
+
+const SearchPanel: React.FC<SearchPanelProps> = ({
+  users,
+  param,
+  setParam,
+}) => {
   return (
     <form>
       <div>
@@ -13,7 +23,7 @@ const SearchPanel = ({ users, param, setParam }) => {
           }}
         />
         <select
-          value={param.userId}
+          value={param.personId}
           onChange={(e) => {
             setParam({ ...param, personId: e.target.value });
           }}
@@ -31,4 +41,5 @@ const SearchPanel = ({ users, param, setParam }) => {
     </form>
   );
 };
+
 export default SearchPanel;

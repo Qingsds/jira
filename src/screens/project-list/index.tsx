@@ -3,13 +3,33 @@ import SearchPanel from "./search-panel";
 import List from "./list";
 import * as qs from "qs";
 import { cleanObject, useDebounce, useMount } from "utils";
+
+export interface User {
+  id:number;
+  name:string;
+}
+
+export interface Project {
+  id:number;
+  name:string;
+  personId:number;
+  organization:string;
+  created:number;
+}
+
+export interface Param {
+  name?:string;
+  personId?:number|string;
+}
+
 const ProjectListScreen = () => {
-  const [param, setParam] = useState({
+
+  const [param, setParam] = useState<Param>({
     name: "",
     personId: "",
   });
-  const [users, setUsers] = useState([]);
-  const [list, setList] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [list, setList] = useState<Project[]>([]);
   const apiURL = process.env.REACT_APP_API_URL;
   const debounceParam = useDebounce(param, 1000);
 
