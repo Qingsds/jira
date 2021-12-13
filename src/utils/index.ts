@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 /* 此方法用来排除出去0的 false可能 */
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 /* 此方法用来清除对象中的空属性 */
-export const cleanObject =(object:any) => {
+export const cleanObject = (object: any) => {
   let result = { ...object };
   Object.keys(result).forEach((key) => {
     const value = result[key];
@@ -38,20 +38,20 @@ export const useDebounce = <T>(param: T, delay?: number) => {
 export const useArray = <T>(array: T[]) => {
   const [value, setValue] = useState(array);
 
-  const add = (person:T) => {
-    setValue([...value,person])
-  }
+  const add = (person: T) => {
+    setValue([...value, person]);
+  };
 
-  const removeIndex = (number:number) => {
-    const newValue = value.filter((item,index) => {
+  const removeIndex = (number: number) => {
+    const newValue = value.filter((item, index) => {
       return index !== number;
-    })
-    setValue(newValue)
-  }
+    });
+    setValue(newValue);
+  };
 
   const clear = () => {
     setValue([]);
-  }
+  };
 
-  return {value,setValue,add,removeIndex,clear}
+  return { value, setValue, add, removeIndex, clear };
 };

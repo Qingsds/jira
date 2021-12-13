@@ -8,8 +8,6 @@ const LoginScreen = () => {
     event.preventDefault();
     const username = (event.currentTarget[0] as HTMLInputElement).value;
     const password = (event.currentTarget[1] as HTMLInputElement).value;
-    console.log(username, password);
-
     login({ username, password });
   };
   return (
