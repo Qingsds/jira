@@ -38,7 +38,7 @@ const ProjectListScreen = () => {
 
   useEffect(() => {
     client("projects", { data: cleanObject(debounceParam) }).then(setList);
-  }, [debounceParam, client]);
+  }, [debounceParam,client]);
 
   useMount(() => {
     /* setUsers => (data => setUsers(data)) */
