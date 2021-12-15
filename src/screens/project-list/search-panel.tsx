@@ -1,12 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { Form, Input, Select } from "antd";
 import React from "react";
-import { Param, User } from ".";
+import { User } from ".";
 
 interface SearchPanelProps {
   users: User[];
-  param: Param;
-  setParam: (value: Param) => void;
+  param: {
+    name: string;
+    personId: string;
+  };
+  setParam: (value: SearchPanelProps["param"]) => void;
 }
 
 const SearchPanel: React.FC<SearchPanelProps> = ({
@@ -15,7 +18,7 @@ const SearchPanel: React.FC<SearchPanelProps> = ({
   setParam,
 }) => {
   return (
-    <Form css={{marginBottom:'2rem'}} layout={"inline"}>
+    <Form css={{ marginBottom: "2rem" }} layout={"inline"}>
       <Form.Item>
         <Input
           placeholder={"项目名"}

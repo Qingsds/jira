@@ -7474,10 +7474,10 @@ jest@26.6.0:
     import-local "^3.0.2"
     jest-cli "^26.6.0"
 
-jira-dev-tool@^1.7.61:
-  version "1.7.61"
-  resolved "https://registry.npmmirror.com/jira-dev-tool/download/jira-dev-tool-1.7.61.tgz#32477c1e0f9f9f46ad5ffd61409ac05a1422c17c"
-  integrity sha1-Mkd8Hg+fn0atX/1hQJrAWhQiwXw=
+jira-dev-tool@1.7.16:
+  version "1.7.16"
+  resolved "https://registry.npmmirror.com/jira-dev-tool/download/jira-dev-tool-1.7.16.tgz#21f9cbd79b67d3a6e58017c2a3b65fae4f15a095"
+  integrity sha1-IfnL15tn06blgBfCo7Zfrk8VoJU=
   dependencies:
     antd "^4.9.1"
     msw "^0.24.1"
@@ -8008,6 +8008,14 @@ match-sorter@^4.1.0:
   integrity sha1-V1tLNzcYW6lRi2dhK2aHfqCzc1g=
   dependencies:
     "@babel/runtime" "^7.10.5"
+    remove-accents "0.4.2"
+
+match-sorter@^6.0.2:
+  version "6.3.1"
+  resolved "https://registry.npmmirror.com/match-sorter/download/match-sorter-6.3.1.tgz?cache=0&sync_timestamp=1632413633048&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fmatch-sorter%2Fdownload%2Fmatch-sorter-6.3.1.tgz#98cc37fda756093424ddf3cbc62bfe9c75b92bda"
+  integrity sha1-mMw3/adWCTQk3fPLxiv+nHW5K9o=
+  dependencies:
+    "@babel/runtime" "^7.12.5"
     remove-accents "0.4.2"
 
 md5.js@^1.3.4:
@@ -10739,6 +10747,14 @@ react-query-devtools@^2.6.3:
   integrity sha1-98mCg51LAAHO5NXd+oJkk8L2NB8=
   dependencies:
     match-sorter "^4.1.0"
+
+react-query@3.5.10:
+  version "3.5.10"
+  resolved "https://registry.npmmirror.com/react-query/download/react-query-3.5.10.tgz#c6bc348dcea932b59035e93ad4ab5d98d4234fd1"
+  integrity sha1-xrw0jc6pMrWQNek61KtdmNQjT9E=
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    match-sorter "^6.0.2"
 
 react-query@^2.26.3:
   version "2.26.4"

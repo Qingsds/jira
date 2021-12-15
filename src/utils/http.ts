@@ -6,7 +6,7 @@ import { useCallback } from "react";
 const apiURL = process.env.REACT_APP_API_URL;
 
 interface HttpFetchProps extends RequestInit {
-  data?: string;
+  data?: object;
   token?: string;
 }
 

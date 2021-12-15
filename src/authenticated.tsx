@@ -4,7 +4,7 @@ import { useAuth } from "context/auth-context";
 import React from "react";
 import ProjectListScreen from "screens/project-list";
 import { ReactComponent as SoftwareLog } from "assets/software-logo.svg";
-import { Dropdown, Menu } from "antd";
+import { Button, Dropdown, Menu } from "antd";
 const AuthenticatedScreen = () => {
   const { logout, user } = useAuth();
   return (
@@ -21,13 +21,13 @@ const AuthenticatedScreen = () => {
               <Menu>
                 <Menu.Item key={"logout"}>
                   {/*   eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                  <a onClick={logout}>登出</a>
+                  <Button type={'link'} onClick={logout}>登出</Button>
                 </Menu.Item>
               </Menu>
             }
           >
             {/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a onClick={(e) => e.preventDefault()}>hi,{user?.name}</a>
+            <Button type={'link'} onClick={(e) => e.preventDefault()}>hi,{user?.name}</Button>
           </Dropdown>
         </HeaderRight>
       </Header>
