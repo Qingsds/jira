@@ -1,4 +1,5 @@
 import { Table } from "antd";
+import dayjs from "dayjs";
 import React from "react";
 import { Project, User } from ".";
 
@@ -20,6 +21,11 @@ const List: React.FC<ListProps> = ({ list, users }) => {
           sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
+          title: "部门",
+          /* 根据可以查找值 */
+          dataIndex: "organization",
+        },
+        {
           title: "负责人",
           render(value, project) {
             return (
@@ -28,6 +34,12 @@ const List: React.FC<ListProps> = ({ list, users }) => {
                   "未知"}
               </span>
             );
+          },
+        },
+        {
+          title: "创建时间",
+          render(value, project) {
+            return <span>{dayjs(project.created).format("YYYY-MM-DD")}</span>;
           },
         },
       ]}

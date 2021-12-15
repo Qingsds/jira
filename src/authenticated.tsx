@@ -3,19 +3,32 @@ import { Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import React from "react";
 import ProjectListScreen from "screens/project-list";
-
+import { ReactComponent as SoftwareLog } from "assets/software-logo.svg";
+import { Dropdown, Menu } from "antd";
 const AuthenticatedScreen = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   return (
     <Container>
       <Header between={true}>
         <HeaderLeft gap={true}>
-          <h2>logo</h2>
+          <SoftwareLog width={"18rem"} color={"rgb(38,132,255)"} />
           <h2>项目</h2>
           <h2>名称</h2>
         </HeaderLeft>
         <HeaderRight>
-          <button onClick={() => logout()}>登出</button>
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item key={"logout"}>
+                  {/*   eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                  <a onClick={logout}>登出</a>
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            {/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a onClick={(e) => e.preventDefault()}>hi,{user?.name}</a>
+          </Dropdown>
         </HeaderRight>
       </Header>
       <Main>
@@ -38,11 +51,10 @@ const Container = styled.div`
 `;
 /* grid-area用来给grid的子元素起名字 */
 const Header = styled(Row)`
-
+  padding: 3.2rem;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
 `;
-const HeaderLeft = styled(Row)`
-
-`;
+const HeaderLeft = styled(Row)``;
 const HeaderRight = styled.div``;
 
 const Main = styled.div``;

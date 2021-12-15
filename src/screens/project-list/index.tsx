@@ -3,6 +3,7 @@ import SearchPanel from "./search-panel";
 import List from "./list";
 import { cleanObject, useDebounce, useMount } from "utils";
 import { useHttp } from "utils/http";
+import styled from "@emotion/styled";
 
 export interface User {
   id: number;
@@ -38,7 +39,7 @@ const ProjectListScreen = () => {
 
   useEffect(() => {
     client("projects", { data: cleanObject(debounceParam) }).then(setList);
-  }, [debounceParam,client]);
+  }, [debounceParam, client]);
 
   useMount(() => {
     /* setUsers => (data => setUsers(data)) */
@@ -46,11 +47,16 @@ const ProjectListScreen = () => {
   });
 
   return (
-    <div>
+    <Container>
+      <h1>项目列表</h1>
       <SearchPanel users={users} param={param} setParam={setParam} />
       <List list={list} users={users} />
-    </div>
+    </Container>
   );
 };
 
 export default ProjectListScreen;
+
+const Container = styled.div`
+  padding: 3.2rem;
+`;
