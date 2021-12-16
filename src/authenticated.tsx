@@ -5,13 +5,11 @@ import React from "react";
 import ProjectListScreen from "screens/project-list";
 import { ReactComponent as SoftwareLog } from "assets/software-logo.svg";
 import { Button, Dropdown, Menu } from "antd";
-import { useDocumentTitle } from "utils/title";
 import { Route, Routes } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import ProjectScreen from "screens/project";
 import { resetRoute } from "utils";
 const AuthenticatedScreen = () => {
-  useDocumentTitle("项目列表");
   return (
     <Container>
       <HeaderScreen />

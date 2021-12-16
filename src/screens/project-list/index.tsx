@@ -6,6 +6,8 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
+import { useDocumentTitle } from "utils/title";
+import { useUrlQueryParams } from "utils/url";
 
 export interface User {
   id: number;
@@ -29,9 +31,11 @@ const ProjectListScreen = () => {
     name: "",
     personId: "",
   });
+  // const [param] = useUrlQueryParams(["name", "personId"]);
   const debounceParam = useDebounce(param, 1000);
   const { isLoading, error, data: list } = useProjects(debounceParam);
   const { data: users } = useUsers();
+  useDocumentTitle("项目列表");
   return (
     <Container>
       <h1>项目列表</h1>
