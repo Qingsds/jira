@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Button, Card, Divider, Typography } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LoginScreen from "./login";
 import RegisterScreen from "./register";
 import styled from "@emotion/styled";
@@ -12,6 +12,20 @@ const UnauthenticatedScreen = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    if (error) {
+      timer = setTimeout(() => {
+        setError(null);
+      }, 2000);
+    }
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [error]);
+
   return (
     <Container>
       <Header />
@@ -21,7 +35,11 @@ const UnauthenticatedScreen = () => {
         {error ? (
           <Typography.Text type={"danger"}>{error.message}</Typography.Text>
         ) : null}
-        {isRegister ? <RegisterScreen onError={setError}/> : <LoginScreen onError={setError}/>}
+        {isRegister ? (
+          <RegisterScreen onError={setError} />
+        ) : (
+          <LoginScreen onError={setError} />
+        )}
         <Divider />
         <Button type={"link"} onClick={() => setIsRegister(!isRegister)}>
           {isRegister ? "已经有账号了？直接登录" : "没有账号？注册新账号"}
