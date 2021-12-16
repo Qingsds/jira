@@ -2,27 +2,30 @@ import { Table } from "antd";
 import { TableProps } from "antd/lib/table";
 import dayjs from "dayjs";
 import React from "react";
+import { Link } from "react-router-dom";
 import { Project, User } from ".";
 
 interface ListProps extends TableProps<Project> {
   users: User[];
-
 }
 
-const List: React.FC<ListProps> = ({users,...res }) => {
+const List: React.FC<ListProps> = ({ users, ...res }) => {
   return (
     <Table
       pagination={false}
       /* rowKey不加会报错 */
-      rowKey={columns => columns.id}
+      rowKey={(columns) => columns.id}
       {...res}
       columns={[
         {
           title: "名称",
-          /* 根据可以查找值 */
-          dataIndex: "name",
           /* 排序 */
           sorter: (a, b) => a.name.localeCompare(b.name),
+          render(value, project) {
+            return (
+              <Link to={`projects/${String(project.id)}`}>{project.name}</Link>
+            );
+          },
         },
         {
           title: "部门",
@@ -31,7 +34,7 @@ const List: React.FC<ListProps> = ({users,...res }) => {
         },
         {
           title: "负责人",
-          render(value, project,index) {
+          render(value, project, index) {
             return (
               <span key={index}>
                 {users.find((user) => user.id === project.personId)?.name ||
@@ -42,7 +45,7 @@ const List: React.FC<ListProps> = ({users,...res }) => {
         },
         {
           title: "创建时间",
-          render(value, project,index) {
+          render(value, project, index) {
             return (
               <span key={index}>
                 {dayjs(project.created).format("YYYY-MM-DD")}
@@ -51,7 +54,6 @@ const List: React.FC<ListProps> = ({users,...res }) => {
           },
         },
       ]}
-      
     />
   );
 };

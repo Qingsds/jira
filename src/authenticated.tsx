@@ -6,41 +6,63 @@ import ProjectListScreen from "screens/project-list";
 import { ReactComponent as SoftwareLog } from "assets/software-logo.svg";
 import { Button, Dropdown, Menu } from "antd";
 import { useDocumentTitle } from "utils/title";
+import { Route, Routes } from "react-router";
+import { BrowserRouter as Router } from "react-router-dom";
+import ProjectScreen from "screens/project";
+import { resetRoute } from "utils";
 const AuthenticatedScreen = () => {
-  const { logout, user } = useAuth();
-  useDocumentTitle('项目列表')
+  useDocumentTitle("项目列表");
   return (
     <Container>
-      <Header between={true}>
-        <HeaderLeft gap={true}>
-          <SoftwareLog width={"18rem"} color={"rgb(38,132,255)"} />
-          <h2>项目</h2>
-          <h2>名称</h2>
-        </HeaderLeft>
-        <HeaderRight>
-          <Dropdown
-            overlay={
-              <Menu>
-                <Menu.Item key={"logout"}>
-                  {/*   eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                  <Button type={'link'} onClick={logout}>登出</Button>
-                </Menu.Item>
-              </Menu>
-            }
-          >
-            {/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <Button type={'link'} onClick={(e) => e.preventDefault()}>hi,{user?.name}</Button>
-          </Dropdown>
-        </HeaderRight>
-      </Header>
+      <HeaderScreen />
       <Main>
-        <ProjectListScreen />
+        <Router>
+          <Routes>
+            <Route path="projects" element={<ProjectListScreen />} />
+            <Route path="projects/:projectId/*" element={<ProjectScreen />} />
+            <Route index element={<ProjectListScreen />} />
+          </Routes>
+        </Router>
       </Main>
     </Container>
   );
 };
 
 export default AuthenticatedScreen;
+
+const HeaderScreen = () => {
+  const { user, logout } = useAuth();
+  return (
+    <Header between={true}>
+      <HeaderLeft gap={true}>
+        <Button type={"link"} onClick={resetRoute}>
+          <SoftwareLog width={"18rem"} color={"rgb(38,132,255)"} />
+        </Button>
+        <h2>项目</h2>
+        <h2>名称</h2>
+      </HeaderLeft>
+      <HeaderRight>
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item key={"logout"}>
+                {/*   eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <Button type={"link"} onClick={logout}>
+                  登出
+                </Button>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          {/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <Button type={"link"} onClick={(e) => e.preventDefault()}>
+            hi,{user?.name}
+          </Button>
+        </Dropdown>
+      </HeaderRight>
+    </Header>
+  );
+};
 
 const Container = styled.div`
   display: grid;

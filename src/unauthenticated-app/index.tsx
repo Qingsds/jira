@@ -14,7 +14,7 @@ const UnauthenticatedScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setError(null);
-    }, 2000);
+    }, 5000);
 
     return () => {
       clearTimeout(timer);
@@ -76,7 +76,7 @@ const Header = styled.header`
 
 const ShadowCard = styled(Card)`
   width: 40rem;
-  min-height: 56rem;
+  min-height: 38rem;
   padding: 3.2rem 4rem;
   border-radius: 0.3rem;
   box-sizing: border-box;
