@@ -11,21 +11,15 @@ import right from "assets/right.svg";
 const UnauthenticatedScreen = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-    if (error) {
-      timer = setTimeout(() => {
-        setError(null);
-      }, 2000);
-    }
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
-  }, [error]);
+    const timer = setTimeout(() => {
+      setError(null);
+    }, 2000);
 
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [error, setError]);
   return (
     <Container>
       <Header />
