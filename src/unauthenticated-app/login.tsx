@@ -3,12 +3,20 @@ import { Form, Input } from "antd";
 import { useAuth } from "context/auth-context";
 import React from "react";
 import { LongButton } from "unauthenticated-app";
+import { useAsync } from "utils/use-async";
 
-const LoginScreen = () => {
+const LoginScreen = ({ onError }: { onError: (error: Error) => void }) => {
   const { login } = useAuth();
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
 
-  const submitHandler = (value: { username: string; password: string }) => {
-    login(value);
+  const submitHandler = async (value: {
+    username: string;
+    password: string;
+  }) => {
+    await run(login(value)).catch((error) => {
+      console.log(error);
+      onError(error);
+    });
   };
   return (
     <Form onFinish={submitHandler}>
@@ -25,7 +33,7 @@ const LoginScreen = () => {
         <Input placeholder={"密码"} type={"password"} id={"password"} />
       </Form.Item>
       <Form.Item>
-        <LongButton type="primary" htmlType={"submit"}>
+        <LongButton loading={isLoading} type="primary" htmlType={"submit"}>
           登录
         </LongButton>
       </Form.Item>
