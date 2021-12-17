@@ -1,15 +1,25 @@
 import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
+import { cleanObject } from "utils";
 
 export const useUrlQueryParams = <K extends string>(keys: K[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
   return [
-    useMemo(() => 
-       keys.reduce((prev, key) => {
-        return { ...prev, [key]: searchParams.get(key) };
-      }, {} as { [key in K]: string })
+    useMemo(
+      () =>
+        keys.reduce((prev, key) => {
+          return { ...prev, [key]: searchParams.get(key) || "" };
+        }, {} as { [key in K]: string }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    , [searchParams]),
-    setSearchParams,
-  ] as const ;
+      [searchParams]
+    ),
+    (params: { [key in K]?: unknown }) => {
+      /* 将iterator 转换为一个普通的对象 */
+      const o = cleanObject({
+        ...Object.entries(searchParams),
+        ...params,
+      }) as URLSearchParamsInit;
+      setSearchParams(o);
+    },
+  ] as const;
 };

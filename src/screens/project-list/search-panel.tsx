@@ -1,22 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import { Form, Input, Select } from "antd";
+import { Form, Input } from "antd";
+import { UserSelect } from "components/user-select";
 import React from "react";
-import { User } from ".";
+import { Project, User } from ".";
 
 interface SearchPanelProps {
   users: User[];
-  param: {
-    name: string;
-    personId: string;
-  };
+  param: Partial<Pick<Project, "name" | "personId">>;
   setParam: (value: SearchPanelProps["param"]) => void;
 }
 
-const SearchPanel: React.FC<SearchPanelProps> = ({
-  users,
-  param,
-  setParam,
-}) => {
+const SearchPanel: React.FC<SearchPanelProps> = ({ param, setParam }) => {
   return (
     <Form css={{ marginBottom: "2rem" }} layout={"inline"}>
       <Form.Item>
@@ -30,21 +24,11 @@ const SearchPanel: React.FC<SearchPanelProps> = ({
         />
       </Form.Item>
       <Form.Item>
-        <Select
+        <UserSelect
           value={param.personId}
-          onChange={(value) => {
-            setParam({ ...param, personId: value });
-          }}
-        >
-          <Select.Option value={""}>负责人</Select.Option>
-          {users.map((user) => {
-            return (
-              <Select.Option key={user.id} value={user.id}>
-                {user.name}
-              </Select.Option>
-            );
-          })}
-        </Select>
+          onChange={(value) => setParam({ ...param, personId: value })}
+          defaultOptionName={'负责人'}
+        />
       </Form.Item>
     </Form>
   );

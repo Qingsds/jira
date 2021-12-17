@@ -1,13 +1,12 @@
-import { useState } from "react";
 import SearchPanel from "./search-panel";
 import List from "./list";
 import { useDebounce } from "utils";
-import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useDocumentTitle } from "utils/title";
-import { useUrlQueryParams } from "utils/url";
+import styled from "@emotion/styled";
+import { useProjectParams } from "./utils";
 
 export interface User {
   id: number;
@@ -21,25 +20,29 @@ export interface User {
 export interface Project {
   id: number;
   name: string;
-  personId: number | string;
+  personId: number;
   organization: string;
+  pin: boolean;
   created: number;
 }
 
 const ProjectListScreen = () => {
-  const [param, setParam] = useState({
-    name: "",
-    personId: "",
-  });
-  // const [param] = useUrlQueryParams(["name", "personId"]);
-  const debounceParam = useDebounce(param, 1000);
-  const { isLoading, error, data: list } = useProjects(debounceParam);
+  const [searchParams, setParam] = useProjectParams();
+  const {
+    isLoading,
+    error,
+    data: list,
+  } = useProjects(useDebounce(searchParams, 1000));
   const { data: users } = useUsers();
   useDocumentTitle("项目列表");
   return (
     <Container>
       <h1>项目列表</h1>
-      <SearchPanel users={users || []} param={param} setParam={setParam} />
+      <SearchPanel
+        users={users || []}
+        param={searchParams}
+        setParam={setParam}
+      />
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
