@@ -1,15 +1,21 @@
 import { Table } from "antd";
 import { TableProps } from "antd/lib/table";
+import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useEditProject } from "utils/project";
 import { Project, User } from ".";
+
 
 interface ListProps extends TableProps<Project> {
   users: User[];
 }
 
 const List: React.FC<ListProps> = ({ users, ...res }) => {
+  const { mutate } = useEditProject();
+  /* 函数的柯里化 */
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id,pin });
   return (
     <Table
       pagination={false}
@@ -17,6 +23,18 @@ const List: React.FC<ListProps> = ({ users, ...res }) => {
       rowKey={(columns) => columns.id}
       {...res}
       columns={[
+        {
+          title: <Pin checked={true} disabled={true} />,
+          render(value, project) {
+            return (
+              <Pin
+                checked={project.pin}
+                onChangeCheck={pinProject(project.id)}
+              />
+            );
+          },
+        },
+
         {
           title: "名称",
           /* 排序 */

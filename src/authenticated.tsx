@@ -33,8 +33,8 @@ const HeaderScreen = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <Button type={"link"} onClick={resetRoute}>
-          <SoftwareLog width={"18rem"} color={"rgb(38,132,255)"} />
+        <Button style={{display:"flex",alignItems:"center",margin:0}} type={"link"}  onClick={resetRoute}>
+          <SoftwareLog  width={"18rem"} color={"rgb(38,132,255)"} />
         </Button>
         <h2>项目</h2>
         <h2>名称</h2>

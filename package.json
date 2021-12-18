@@ -19,7 +19,7 @@
     "craco-less": "1.17.1",
     "dayjs": "^1.10.7",
     "eslint-config-prettier": "^8.3.0",
-    "jira-dev-tool": "1.7.16",
+    "jira-dev-tool": "1.6.18",
     "nanoid": "^3.1.30",
     "qs": "^6.10.2",
     "react": "^17.0.2",
