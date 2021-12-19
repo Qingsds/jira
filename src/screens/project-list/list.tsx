@@ -1,4 +1,4 @@
-import { Table } from "antd";
+import { Button, Dropdown, Menu, Table } from "antd";
 import { TableProps } from "antd/lib/table";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
@@ -7,16 +7,22 @@ import { Link } from "react-router-dom";
 import { useEditProject } from "utils/project";
 import { Project, User } from ".";
 
-
 interface ListProps extends TableProps<Project> {
   users: User[];
-  refresh?:() => void;
+  refresh?: () => void;
+  setProjectModalOpen: (isOpen: boolean) => void;
 }
 
-const List: React.FC<ListProps> = ({ users,refresh, ...res }) => {
+const List: React.FC<ListProps> = ({
+  users,
+  refresh,
+  setProjectModalOpen,
+  ...res
+}) => {
   const { mutate } = useEditProject();
   /* 函数的柯里化 */
-  const pinProject = (id: number) => (pin: boolean) => mutate({ id,pin }).then(refresh);
+  const pinProject = (id: number) => (pin: boolean) =>
+    mutate({ id, pin }).then(refresh);
   return (
     <Table
       pagination={false}
@@ -69,6 +75,28 @@ const List: React.FC<ListProps> = ({ users,refresh, ...res }) => {
               <span key={index}>
                 {dayjs(project.created).format("YYYY-MM-DD")}
               </span>
+            );
+          },
+        },
+        {
+          render(value, project) {
+            return (
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item key={'edit'}>
+                      <Button
+                        type={"link"}
+                        onClick={() => setProjectModalOpen(true)}
+                      >
+                        编辑
+                      </Button>
+                    </Menu.Item>
+                  </Menu>
+                }
+              >
+                <Button type={"link"}>...</Button>
+              </Dropdown>
             );
           },
         },

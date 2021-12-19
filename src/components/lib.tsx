@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { Button } from "antd";
 
 export const Row = styled.div<{
   gap?: number | boolean;
@@ -21,4 +22,10 @@ export const Row = styled.div<{
   }
   margin-top: 0 !important;
   margin-bottom: 0 !important;
+`;
+
+export const ButtonWithNoPadding = styled(Button)`
+  padding: 0;
+  display: flex;
+  align-items: center;
 `;
