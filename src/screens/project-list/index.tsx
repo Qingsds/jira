@@ -32,6 +32,7 @@ const ProjectListScreen = () => {
     isLoading,
     error,
     data: list,
+    retry
   } = useProjects(useDebounce(searchParams, 1000));
   const { data: users } = useUsers();
   useDocumentTitle("项目列表");
@@ -46,7 +47,7 @@ const ProjectListScreen = () => {
       {error ? (
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
-      <List dataSource={list || []} users={users || []} loading={isLoading} />
+      <List refresh={retry} dataSource={list || []} users={users || []} loading={isLoading} />
     </Container>
   );
 };

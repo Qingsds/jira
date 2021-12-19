@@ -10,12 +10,13 @@ import { Project, User } from ".";
 
 interface ListProps extends TableProps<Project> {
   users: User[];
+  refresh?:() => void;
 }
 
-const List: React.FC<ListProps> = ({ users, ...res }) => {
+const List: React.FC<ListProps> = ({ users,refresh, ...res }) => {
   const { mutate } = useEditProject();
   /* 函数的柯里化 */
-  const pinProject = (id: number) => (pin: boolean) => mutate({ id,pin });
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id,pin }).then(refresh);
   return (
     <Table
       pagination={false}
