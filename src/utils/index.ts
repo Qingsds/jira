@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /* 此方法用来排除出去0的 false可能 */
 export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
@@ -60,4 +60,18 @@ export const useArray = <T>(array: T[]) => {
 
 export const resetRoute = () => {
   window.location.href = window.location.origin;
+};
+
+/**
+ * 返回组件挂载的状态，如果没有挂在或者已经卸载 为false，反之为true
+ */
+export const useMountedRef = () => {
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+  return mountedRef;
 };

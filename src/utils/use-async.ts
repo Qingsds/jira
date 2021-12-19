@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMountedRef } from "utils";
 
 interface State<D> {
   error?: Error | null;
@@ -27,6 +28,7 @@ export const useAsync = <D>(
   });
   /* retry被调用时，让state再刷新一次 */
   const [retry, setRetry] = useState(() => () => {});
+  const mountedRef = useMountedRef();
 
   const setData = (data: D) =>
     setState({
@@ -51,13 +53,15 @@ export const useAsync = <D>(
     }
     setRetry(() => () => {
       if (resetConfig?.retry) {
-        run(resetConfig.retry(),resetConfig);
+        run(resetConfig.retry(), resetConfig);
       }
     });
     setState({ ...state, state: "loading" });
     return promise
       .then((data) => {
-        setData(data);
+        if (mountedRef.current) {
+          setData(data);
+        }
         return data;
       })
       .catch((error) => {
