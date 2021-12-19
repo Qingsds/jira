@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useMountedRef } from "utils";
 
 interface State<D> {
@@ -30,50 +30,55 @@ export const useAsync = <D>(
   const [retry, setRetry] = useState(() => () => {});
   const mountedRef = useMountedRef();
 
-  const setData = (data: D) =>
-    setState({
-      state: "success",
-      data,
-      error: null,
-    });
+  const setData = useCallback(
+    (data: D) =>
+      setState({
+        state: "success",
+        data,
+        error: null,
+      }),
+    []
+  );
 
-  const setError = (error: Error) =>
-    setState({
-      state: "error",
-      error,
-      data: null,
-    });
-
-  const run = (
-    promise: Promise<D>,
-    resetConfig?: { retry: () => Promise<D> }
-  ) => {
-    if (!promise || !promise.then) {
-      throw new Error("请传入 promise 数据类型");
-    }
-    setRetry(() => () => {
-      if (resetConfig?.retry) {
-        run(resetConfig.retry(), resetConfig);
+  const setError = useCallback(
+    (error: Error) =>
+      setState({
+        state: "error",
+        error,
+        data: null,
+      }),
+    []
+  );
+  const run = useCallback(
+    (promise: Promise<D>, resetConfig?: { retry: () => Promise<D> }) => {
+      if (!promise || !promise.then) {
+        throw new Error("请传入 promise 数据类型");
       }
-    });
-    setState({ ...state, state: "loading" });
-    return promise
-      .then((data) => {
-        if (mountedRef.current) {
-          setData(data);
-        }
-        return data;
-      })
-      .catch((error) => {
-        /* catch会消化异常 如果不主动抛出，外面接收不到异常 */
-        setError(error);
-        if (config.throwOnError) {
-          return Promise.reject(error);
-        } else {
-          return error;
+      setRetry(() => () => {
+        if (resetConfig?.retry) {
+          run(resetConfig.retry(), resetConfig);
         }
       });
-  };
+      setState((preState) => ({ ...preState, state: "loading" }));
+      return promise
+        .then((data) => {
+          if (mountedRef.current) {
+            setData(data);
+          }
+          return data;
+        })
+        .catch((error) => {
+          /* catch会消化异常 如果不主动抛出，外面接收不到异常 */
+          setError(error);
+          if (config.throwOnError) {
+            return Promise.reject(error);
+          } else {
+            return error;
+          }
+        });
+    },
+    [config.throwOnError, mountedRef, setData, setError]
+  );
 
   return {
     isError: state.state === "error",
