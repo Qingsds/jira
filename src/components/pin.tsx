@@ -12,7 +12,6 @@ export const Pin = (props: PinProps) => {
       count={1}
       value={checked ? 1 : 0}
       onChange={(value) => {
-        console.log(value);
         return onChangeCheck?.(!!value);
       }}
       {...restProps}
