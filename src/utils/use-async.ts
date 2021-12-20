@@ -73,7 +73,6 @@ export const useAsync = <D>(
       return promise
         .then((data) => {
           setData(data);
-
           return data;
         })
         .catch((error) => {

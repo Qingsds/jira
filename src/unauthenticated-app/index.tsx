@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Button, Card, Divider, Typography } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import LoginScreen from "./login";
 import RegisterScreen from "./register";
 import styled from "@emotion/styled";
@@ -15,7 +15,6 @@ const UnauthenticatedScreen = () => {
     const timer = setTimeout(() => {
       setError(null);
     }, 5000);
-
     return () => {
       clearTimeout(timer);
     };
