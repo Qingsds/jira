@@ -1,6 +1,5 @@
 import { ButtonWithNoPadding, Row } from "components/lib";
 import { useAuth } from "context/auth-context";
-import React, { useState } from "react";
 import ProjectListScreen from "screens/project-list";
 import { ReactComponent as SoftwareLog } from "assets/software-logo.svg";
 import { Button, Dropdown, Menu } from "antd";
@@ -12,49 +11,43 @@ import styled from "@emotion/styled";
 import { ProjectModal } from "screens/project-list/project-modal";
 import { ProjectPopover } from "components/project-popover";
 const AuthenticatedScreen = () => {
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
   return (
     <Container>
-      <HeaderScreen setProjectModalOpen={setProjectModalOpen} />
+      <HeaderScreen />
       <Main>
         <Router>
           <Routes>
             <Route
               path="projects"
               element={
-                <ProjectListScreen setProjectModalOpen={setProjectModalOpen} />
+                <ProjectListScreen/>
               }
             />
             <Route path="projects/:projectId/*" element={<ProjectScreen />} />
             <Route
               index
               element={
-                <ProjectListScreen setProjectModalOpen={setProjectModalOpen} />
+                <ProjectListScreen />
               }
             />
           </Routes>
         </Router>
       </Main>
-      <ProjectModal
-        projectModalOpen={projectModalOpen}
-        onClose={() => setProjectModalOpen(false)}
-      />
+      <ProjectModal/>
     </Container>
   );
 };
 
 export default AuthenticatedScreen;
 
-const HeaderScreen = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+const HeaderScreen = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
         <ButtonWithNoPadding type={"link"} onClick={resetRoute}>
           <SoftwareLog width={"13rem"} color={"rgb(38,132,255)"} />
         </ButtonWithNoPadding>
-        <ProjectPopover setProjectModalOpen={props.setProjectModalOpen} />
+        <ProjectPopover />
         <span>名称</span>
       </HeaderLeft>
       <HeaderRight>

@@ -1,10 +1,18 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 import * as auth from "auth-provider";
 import { User } from "screens/project-list";
 import { http } from "utils/http";
 import { useMount } from "utils";
+import { useDispatch, useSelector } from "react-redux";
+import * as authStore from "store/auth-slice";
 
-interface AuthForm {
+export interface AuthForm {
   username: string;
   password: string;
 }
@@ -17,7 +25,7 @@ interface AuthContextProps {
 }
 
 /* 此方法用于在页面载入时，查看是否有token，有token直接初始化user数据 */
-const bootstrapUser = async () => {
+export const bootstrapUser = async () => {
   let user = null;
   const token = auth.getToken();
   if (token) {
@@ -51,9 +59,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth必须在AuthProvider中使用");
-  }
-  return context;
+  const dispatch :(...args:unknown[]) => Promise<User> = useDispatch();
+  const user = useSelector(authStore.selectAuthState);
+  const login = useCallback(
+    (form: AuthForm) => dispatch(authStore.login(form)),
+    [dispatch]
+  );
+  const logout = useCallback(() => dispatch(authStore.logout()), [dispatch]);
+  const register = useCallback(
+    (form: AuthForm) => dispatch(authStore.register(form)),
+    [dispatch]
+  );
+
+  return { user, login, logout, register };
 };

@@ -8,6 +8,8 @@ import { useDocumentTitle } from "utils/title";
 import styled from "@emotion/styled";
 import { useProjectParams } from "./utils";
 import { Row } from "components/lib";
+import { useDispatch } from "react-redux";
+import { projectListAction } from "./project-list-slice";
 
 export interface User {
   id: number;
@@ -27,10 +29,9 @@ export interface Project {
   created: number;
 }
 
-const ProjectListScreen = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+const ProjectListScreen = () => {
   const [searchParams, setParam] = useProjectParams();
+  const dispatch = useDispatch()
   const {
     isLoading,
     error,
@@ -43,7 +44,7 @@ const ProjectListScreen = (props: {
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={() => props.setProjectModalOpen(true)}>
+        <Button onClick={() => dispatch(projectListAction.openProjectModal())}>
           创建项目
         </Button>
       </Row>
@@ -56,7 +57,6 @@ const ProjectListScreen = (props: {
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
       <List
-        setProjectModalOpen={props.setProjectModalOpen}
         refresh={retry}
         dataSource={list || []}
         users={users || []}

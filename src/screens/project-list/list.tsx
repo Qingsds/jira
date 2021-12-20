@@ -3,26 +3,24 @@ import { TableProps } from "antd/lib/table";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useEditProject } from "utils/project";
 import { Project, User } from ".";
+import { projectListAction } from "./project-list-slice";
 
 interface ListProps extends TableProps<Project> {
   users: User[];
   refresh?: () => void;
-  setProjectModalOpen: (isOpen: boolean) => void;
 }
 
-const List: React.FC<ListProps> = ({
-  users,
-  refresh,
-  setProjectModalOpen,
-  ...res
-}) => {
+const List: React.FC<ListProps> = ({ users, refresh, ...res }) => {
   const { mutate } = useEditProject();
   /* 函数的柯里化 */
   const pinProject = (id: number) => (pin: boolean) =>
     mutate({ id, pin }).then(refresh);
+
+  const dispatch = useDispatch();
   return (
     <Table
       pagination={false}
@@ -84,10 +82,12 @@ const List: React.FC<ListProps> = ({
               <Dropdown
                 overlay={
                   <Menu>
-                    <Menu.Item key={'edit'}>
+                    <Menu.Item key={"edit"}>
                       <Button
                         type={"link"}
-                        onClick={() => setProjectModalOpen(true)}
+                        onClick={() =>
+                          dispatch(projectListAction.openProjectModal())
+                        }
                       >
                         编辑
                       </Button>
