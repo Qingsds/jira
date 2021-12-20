@@ -1,11 +1,12 @@
 import { Drawer } from "antd";
+import { useProjectModal } from "utils/url";
 
-export const ProjectModal = (props: {
-  projectModalOpen: boolean;
-  onClose: () => void;
-}) => {
-  return <Drawer width={"100%"} visible={props.projectModalOpen} onClose={props.onClose}>
-      <h2>ProjectModal</h2> 
+export const ProjectModal = () => {
+  const { projectModalOpen, close } = useProjectModal();
+  return (
+    <Drawer width={"100%"} visible={projectModalOpen} onClose={close}>
+      <h2>ProjectModal</h2>
       编辑项目
-  </Drawer>;
+    </Drawer>
+  );
 };

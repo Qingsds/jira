@@ -8,6 +8,7 @@ import { useDocumentTitle } from "utils/title";
 import styled from "@emotion/styled";
 import { useProjectParams } from "./utils";
 import { Row } from "components/lib";
+import { useProjectModal } from "utils/url";
 
 export interface User {
   id: number;
@@ -27,9 +28,8 @@ export interface Project {
   created: number;
 }
 
-const ProjectListScreen = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+const ProjectListScreen = () => {
+  const {open} =useProjectModal()
   const [searchParams, setParam] = useProjectParams();
   const {
     isLoading,
@@ -43,7 +43,7 @@ const ProjectListScreen = (props: {
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={() => props.setProjectModalOpen(true)}>
+        <Button onClick={() => open()}>
           创建项目
         </Button>
       </Row>
@@ -56,7 +56,6 @@ const ProjectListScreen = (props: {
         <Typography.Text type={"danger"}>{error.message}</Typography.Text>
       ) : null}
       <List
-        setProjectModalOpen={props.setProjectModalOpen}
         refresh={retry}
         dataSource={list || []}
         users={users || []}

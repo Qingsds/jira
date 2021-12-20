@@ -5,24 +5,24 @@ import dayjs from "dayjs";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useEditProject } from "utils/project";
+import { useProjectModal } from "utils/url";
 import { Project, User } from ".";
 
 interface ListProps extends TableProps<Project> {
   users: User[];
   refresh?: () => void;
-  setProjectModalOpen: (isOpen: boolean) => void;
 }
 
 const List: React.FC<ListProps> = ({
   users,
   refresh,
-  setProjectModalOpen,
   ...res
 }) => {
   const { mutate } = useEditProject();
   /* 函数的柯里化 */
   const pinProject = (id: number) => (pin: boolean) =>
     mutate({ id, pin }).then(refresh);
+  const {open} = useProjectModal()
   return (
     <Table
       pagination={false}
@@ -87,7 +87,7 @@ const List: React.FC<ListProps> = ({
                     <Menu.Item key={'edit'}>
                       <Button
                         type={"link"}
-                        onClick={() => setProjectModalOpen(true)}
+                        onClick={() =>open() }
                       >
                         编辑
                       </Button>

@@ -1,6 +1,12 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
 import { cleanObject } from "utils";
+
+/**
+ *
+ * @param keys
+ * @returns 返回页面url中，指定键的参数
+ */
 
 export const useUrlQueryParams = <K extends string>(keys: K[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,4 +28,24 @@ export const useUrlQueryParams = <K extends string>(keys: K[]) => {
       setSearchParams(o);
     },
   ] as const;
+};
+
+export const useProjectModal = () => {
+  /**
+   * projectCreate 新建项目
+   */
+  const [{ projectCreate }, setProjectCreate] = useUrlQueryParams([
+    "projectCreate",
+  ]);
+  const open = useCallback(() => {
+    setProjectCreate({ projectCreate: true });
+  }, [setProjectCreate]);
+  const close = useCallback(() => {
+    setProjectCreate({ projectCreate: undefined });
+  }, [setProjectCreate]);
+  return {
+    projectModalOpen: projectCreate === "true",
+    open,
+    close,
+  };
 };
