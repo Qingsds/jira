@@ -4,7 +4,7 @@ import { User } from "screens/project-list";
 import { http } from "utils/http";
 import { useMount } from "utils";
 import { useAsync } from "utils/use-async";
-import { FullPageError, FullPageLoading } from "components/lib";
+import { FullPageErrorCallback, FullPageLoading } from "components/lib";
 
 interface AuthForm {
   username: string;
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   if(error) {
-    return <FullPageError error={error}/>
+    return <FullPageErrorCallback error={error}/>
   }
 
   return (
