@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 import { Divider, List, Popover, Typography } from "antd";
+import { useProjectModal } from "screens/project-list/utils";
 import { useProjects } from "utils/project";
-import { useProjectModal } from "utils/url";
 import { ButtonWithNoPadding } from "./lib";
 
 export const ProjectPopover = () => {
-  const {open} = useProjectModal()
+  const { open } = useProjectModal();
   const { data: list, isLoading } = useProjects();
   const pinnedProjects = list?.filter((item) => item.pin);
   const content = (
@@ -19,10 +19,7 @@ export const ProjectPopover = () => {
         })}
       </List>
       <Divider />
-      <ButtonWithNoPadding
-        type={"link"}
-        onClick={() => open()}
-      >
+      <ButtonWithNoPadding type={"link"} onClick={() => open()}>
         创建项目
       </ButtonWithNoPadding>
     </Container>

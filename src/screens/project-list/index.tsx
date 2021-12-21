@@ -6,9 +6,8 @@ import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useDocumentTitle } from "utils/title";
 import styled from "@emotion/styled";
-import { useProjectParams } from "./utils";
+import { useProjectModal, useProjectParams } from "./utils";
 import { ErrorBox, Row } from "components/lib";
-import { useProjectModal } from "utils/url";
 
 export interface User {
   id: number;
@@ -50,7 +49,12 @@ const ProjectListScreen = () => {
         setParam={setParam}
       />
       <ErrorBox error={error} />
-      <List dataSource={list || []} users={users || []} loading={isLoading} />
+      <List
+        dataSource={list || []}
+        users={users || []}
+        loading={isLoading}
+        rowKey={(record) => record.id}
+      />
     </Container>
   );
 };

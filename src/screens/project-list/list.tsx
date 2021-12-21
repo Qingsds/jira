@@ -1,27 +1,25 @@
-import { Button, Dropdown, Menu, Table } from "antd";
+import { Button, Dropdown, Menu, Modal, Table } from "antd";
 import { TableProps } from "antd/lib/table";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import React from "react";
 import { Link } from "react-router-dom";
-import { useEditProject } from "utils/project";
-import { useProjectModal } from "utils/url";
+import { useDeleteProject, useEditProject } from "utils/project";
 import { Project, User } from ".";
+import { useProjectModal, useProjectQueryKey } from "./utils";
 
 interface ListProps extends TableProps<Project> {
   users: User[];
 }
 
 const List: React.FC<ListProps> = ({ users, ...res }) => {
-  const { mutate } = useEditProject();
+  const { mutate } = useEditProject(useProjectQueryKey());
   /* 函数的柯里化 */
   const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
-  const { startEdit } = useProjectModal();
   return (
     <Table
       pagination={false}
       /* rowKey不加会报错 */
-      rowKey={(columns) => columns.id}
       {...res}
       columns={[
         {
@@ -53,9 +51,9 @@ const List: React.FC<ListProps> = ({ users, ...res }) => {
         },
         {
           title: "负责人",
-          render(value, project, index) {
+          render(value, project) {
             return (
-              <span key={index}>
+              <span>
                 {users.find((user) => user.id === project.personId)?.name ||
                   "未知"}
               </span>
@@ -64,37 +62,13 @@ const List: React.FC<ListProps> = ({ users, ...res }) => {
         },
         {
           title: "创建时间",
-          render(value, project, index) {
-            return (
-              <span key={index}>
-                {dayjs(project.created).format("YYYY-MM-DD")}
-              </span>
-            );
+          render(value, project) {
+            return <span>{dayjs(project.created).format("YYYY-MM-DD")}</span>;
           },
         },
         {
           render(value, project) {
-            return (
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item key={"edit"}>
-                      <Button
-                        type={"link"}
-                        onClick={() => startEdit(project.id)}
-                      >
-                        编辑
-                      </Button>
-                    </Menu.Item>
-                    <Menu.Item key={"delete"}>
-                      <Button type={"link"}>删除</Button>
-                    </Menu.Item>
-                  </Menu>
-                }
-              >
-                <Button type={"link"}>...</Button>
-              </Dropdown>
-            );
+            return <More project={project} />;
           },
         },
       ]}
@@ -103,3 +77,42 @@ const List: React.FC<ListProps> = ({ users, ...res }) => {
 };
 
 export default List;
+
+const More = ({ project }: { project: Project }) => {
+  const { startEdit } = useProjectModal();
+  const { mutate: deleteProject } = useDeleteProject(useProjectQueryKey());
+  const confirmDeleteProject = (id: number) => {
+    Modal.confirm({
+      title: "确认要删除该项目？",
+      content: "点击确认删除",
+      okText: "删除",
+      onOk: () => {
+        deleteProject({ id });
+      },
+      
+    });
+  };
+  return (
+    <Dropdown
+      overlay={
+        <Menu>
+          <Menu.Item key={"edit"}>
+            <Button type={"link"} onClick={() => startEdit(project.id)}>
+              编辑
+            </Button>
+          </Menu.Item>
+          <Menu.Item key={"delete"}>
+            <Button
+              type={"link"}
+              onClick={() => confirmDeleteProject(project.id)}
+            >
+              删除
+            </Button>
+          </Menu.Item>
+        </Menu>
+      }
+    >
+      <Button type={"link"}>...</Button>
+    </Dropdown>
+  );
+};
