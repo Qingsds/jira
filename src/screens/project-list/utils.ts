@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useProject } from "utils/project";
-import { useUrlQueryParams } from "utils/url";
+import { useSetUrlQueryParams, useUrlQueryParams } from "utils/url";
 
 export const useProjectParams = () => {
   const [param, setParam] = useUrlQueryParams(["name", "personId"]);
@@ -32,13 +32,15 @@ export const useProjectModal = () => {
   const { data: editingProject, isLoading } = useProject(
     Number(editingProjectId)
   );
+
+  const setUrlParams = useSetUrlQueryParams();
+
   const open = useCallback(() => {
     setProjectCreate({ projectCreate: true });
   }, [setProjectCreate]);
   const close = useCallback(() => {
-    setProjectCreate({ projectCreate: undefined });
-    setEditingProjectId({ editingProjectId: undefined });
-  }, [setProjectCreate, setEditingProjectId]);
+    setUrlParams({ projectCreate: "", editingProjectId: "" });
+  }, [setUrlParams]);
   const startEdit = (id: number) =>
     setEditingProjectId({ editingProjectId: id });
   return {
