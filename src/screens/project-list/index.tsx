@@ -53,7 +53,6 @@ const ProjectListScreen = () => {
         dataSource={list || []}
         users={users || []}
         loading={isLoading}
-        rowKey={(record) => record.id}
       />
     </Container>
   );

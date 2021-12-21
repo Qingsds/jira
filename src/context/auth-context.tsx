@@ -5,6 +5,7 @@ import { http } from "utils/http";
 import { useMount } from "utils";
 import { useAsync } from "utils/use-async";
 import { FullPageErrorCallback, FullPageLoading } from "components/lib";
+import { useQueryClient } from "react-query";
 
 interface AuthForm {
   username: string;
@@ -12,7 +13,7 @@ interface AuthForm {
 }
 
 interface AuthContextProps {
-  user: User | null |undefined;
+  user: User | null | undefined;
   register: (from: AuthForm) => Promise<void>;
   login: (from: AuthForm) => Promise<void>;
   logout: () => Promise<void>;
@@ -39,23 +40,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isLoading,
     run,
     data: user,
-    error
+    error,
   } = useAsync<User | null>();
+  const queryClient = useQueryClient();
   /* 这里的setUser => (user => setUser(user)) */
   const login = (form: AuthForm) => auth.login(form).then(setUser);
   const register = (form: AuthForm) => auth.register(form).then(setUser);
-  const logout = () => auth.logout().then(() => setUser(null));
+  const logout = () =>
+    auth.logout().then(() => {
+      setUser(null);
+      /* 退出时把数据清空 */
+      queryClient.clear();
+    });
 
   useMount(() => {
     run(bootstrapUser());
   });
 
-  if(isIdle||isLoading) {
-    return <FullPageLoading />
+  if (isIdle || isLoading) {
+    return <FullPageLoading />;
   }
 
-  if(error) {
-    return <FullPageErrorCallback error={error}/>
+  if (error) {
+    return <FullPageErrorCallback error={error} />;
   }
 
   return (

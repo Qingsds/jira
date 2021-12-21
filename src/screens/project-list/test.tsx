@@ -43,7 +43,7 @@ export const Test = () => {
 
   useEffect(() => {
     return () => {
-      console.log("卸载值：", num);
+      console.log("卸载值:", num);
     };
   }, [num]);
 

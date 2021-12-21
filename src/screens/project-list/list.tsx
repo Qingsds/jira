@@ -20,7 +20,7 @@ const List: React.FC<ListProps> = ({ users, ...res }) => {
     <Table
       pagination={false}
       /* rowKey不加会报错 */
-      {...res}
+      rowKey={(record) => record.id}
       columns={[
         {
           title: <Pin checked={true} disabled={true} />,
@@ -72,6 +72,7 @@ const List: React.FC<ListProps> = ({ users, ...res }) => {
           },
         },
       ]}
+      {...res}
     />
   );
 };
@@ -89,7 +90,6 @@ const More = ({ project }: { project: Project }) => {
       onOk: () => {
         deleteProject({ id });
       },
-      
     });
   };
   return (

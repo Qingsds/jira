@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import { Button, Drawer, Form, Input } from "antd";
+import { Button, Drawer, Form, Input, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { ErrorBox, FullPageLoading } from "components/lib";
+import { ErrorBox } from "components/lib";
 import { UserSelect } from "components/user-select";
 import { useEffect } from "react";
 import { useAddProject, useEditProject } from "utils/project";
@@ -30,17 +30,23 @@ export const ProjectModal = () => {
     form.setFieldsValue(editingProject);
   }, [form, editingProject]);
 
+  // 关闭的回调函数，先清空输入框，然后close
+  const closeModal = () => {
+    form.resetFields();
+    close();
+  };
+
   const title = editingProject ? "编辑项目" : "新建项目";
   return (
     <Drawer
       forceRender={true}
       width={"100%"}
       visible={projectModalOpen}
-      onClose={close}
+      onClose={closeModal}
     >
       <Container>
         {isLoading ? (
-          <FullPageLoading />
+          <Spin size={"large"} />
         ) : (
           <>
             <h1>{title}</h1>
