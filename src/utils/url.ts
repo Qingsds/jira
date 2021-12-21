@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
 import { cleanObject } from "utils";
+import { useProject } from "./project";
 
 /**
  *
@@ -37,15 +38,29 @@ export const useProjectModal = () => {
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParams([
     "projectCreate",
   ]);
+  /* 编辑项目 */
+  const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParams([
+    "editingProjectId",
+  ]);
+  const { data: editingProject, isLoading } = useProject(
+    Number(editingProjectId)
+  );
   const open = useCallback(() => {
     setProjectCreate({ projectCreate: true });
   }, [setProjectCreate]);
   const close = useCallback(() => {
     setProjectCreate({ projectCreate: undefined });
-  }, [setProjectCreate]);
+    setEditingProjectId({ editingProjectId: undefined });
+  }, [setProjectCreate, setEditingProjectId]);
+  const startEdit = (id: number) =>
+    setEditingProjectId({ editingProjectId: id });
   return {
-    projectModalOpen: projectCreate === "true",
+    projectModalOpen: projectCreate === "true" || !!editingProjectId,
     open,
     close,
+    startEdit,
+    editingProject,
+    isLoading,
+    editingProjectId
   };
 };

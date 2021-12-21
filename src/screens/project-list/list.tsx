@@ -10,19 +10,13 @@ import { Project, User } from ".";
 
 interface ListProps extends TableProps<Project> {
   users: User[];
-  refresh?: () => void;
 }
 
-const List: React.FC<ListProps> = ({
-  users,
-  refresh,
-  ...res
-}) => {
+const List: React.FC<ListProps> = ({ users, ...res }) => {
   const { mutate } = useEditProject();
   /* 函数的柯里化 */
-  const pinProject = (id: number) => (pin: boolean) =>
-    mutate({ id, pin }).then(refresh);
-  const {open} = useProjectModal()
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
+  const { startEdit } = useProjectModal();
   return (
     <Table
       pagination={false}
@@ -84,13 +78,16 @@ const List: React.FC<ListProps> = ({
               <Dropdown
                 overlay={
                   <Menu>
-                    <Menu.Item key={'edit'}>
+                    <Menu.Item key={"edit"}>
                       <Button
                         type={"link"}
-                        onClick={() =>open() }
+                        onClick={() => startEdit(project.id)}
                       >
                         编辑
                       </Button>
+                    </Menu.Item>
+                    <Menu.Item key={"delete"}>
+                      <Button type={"link"}>删除</Button>
                     </Menu.Item>
                   </Menu>
                 }

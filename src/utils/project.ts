@@ -1,46 +1,43 @@
-import { useCallback, useEffect } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Project } from "screens/project-list";
-import { cleanObject } from "utils";
 import { useHttp } from "./http";
-import { useAsync } from "./use-async";
 
 export const useProjects = (params?: Partial<Project>) => {
   const client = useHttp();
-  const { run, ...result } = useAsync<Project[]>();
-  const fetchProject = useCallback(
-    () => client("projects", { data: cleanObject(params || {}) }),
-    [params, client]
+  return useQuery<Project[]>(["projects", params], () =>
+    client("projects", { data: params })
   );
-  useEffect(() => {
-    run(fetchProject(), { retry: fetchProject });
-  }, [run,fetchProject]);
-  return { ...result };
 };
 
 export const useEditProject = () => {
-  const { run, ...restProps } = useAsync();
   const client = useHttp();
-  const mutate = (params: Partial<Project>) => {
-    return run(
-      client(`projects/${params.id}`, {
-        data: params,
-        method: "PATCH",
-      })
-    );
-  };
-  return { mutate, restProps };
+  const queryClient = useQueryClient();
+  return useMutation(
+    (param: Partial<Project>) =>
+      client(`projects/${param.id}`, { method: "PATCH", data: param }),
+    { onSuccess: () => queryClient.invalidateQueries("projects") }
+  );
 };
 
 export const useAddProject = () => {
-  const { run, ...restProps } = useAsync();
   const client = useHttp();
-  const mutate = (params: Partial<Project>) => {
-    return run(
+  const queryClient = useQueryClient();
+  return useMutation(
+    (param: Partial<Project>) =>
       client(`projects`, {
-        data: params,
         method: "POST",
-      })
-    );
-  };
-  return { mutate, restProps };
+        data: param,
+      }),
+    {
+      onSuccess: () => queryClient.invalidateQueries("projects"),
+    }
+  );
+};
+
+
+export const useProject = (id?: number) => {
+  const client = useHttp();
+  return useQuery([`project`, {id}], () => client(`projects/${id}`), {
+    enabled: Boolean(id),
+  });
 };

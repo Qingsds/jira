@@ -12,8 +12,8 @@ import { ProjectModal } from "screens/project-list/project-modal";
 import { BoldSpan, ProjectPopover } from "components/project-popover";
 const AuthenticatedScreen = () => {
   return (
-    <Container>
-      <Router>
+    <Router>
+      <Container>
         <HeaderScreen />
         <Main>
           <Routes>
@@ -23,8 +23,8 @@ const AuthenticatedScreen = () => {
           </Routes>
         </Main>
         <ProjectModal />
-      </Router>
-    </Container>
+      </Container>
+    </Router>
   );
 };
 
