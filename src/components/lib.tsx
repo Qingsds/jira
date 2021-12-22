@@ -20,9 +20,9 @@ export const Row = styled.div<{
         : props.gap
         ? "2rem"
         : undefined};
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
 `;
 
 const FullPage = styled.div`

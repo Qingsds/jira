@@ -30,7 +30,7 @@ export const useSetUrlQueryParams = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   return (params: { [key in string]: unknown }) => {
     const o = cleanObject({
-      ...Object.entries(searchParams),
+      ...Object.fromEntries(searchParams),
       ...params,
     }) as URLSearchParamsInit;
     setSearchParams(o);
