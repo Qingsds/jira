@@ -19,7 +19,6 @@ export const useKanbanQueryKey = () => [
 
 export const useTasksSearchParams = () => {
   const [param] = useUrlQueryParams(["name", "typeId", "processorId", "tagId"]);
-  console.log(param);
   const projectId = useProjectIdInUrl();
   return useMemo(
     () => ({

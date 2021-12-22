@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { ScreenContainer } from "components/lib";
 import { useKanban } from "utils/kanban";
 import { useDocumentTitle } from "utils/title";
 import { KanbanColum } from "./kanban-colum";
@@ -8,9 +9,9 @@ import { useKanbanSearchParams, useProjectInUrl } from "./utils";
 const KanbanScreen = () => {
   useDocumentTitle("看板列表");
   const { data: currentProject } = useProjectInUrl();
-  const { data: kanbans = [] } = useKanban(useKanbanSearchParams())
+  const { data: kanbans = [] } = useKanban(useKanbanSearchParams());
   return (
-    <div>
+    <ScreenContainer>
       <h2>{currentProject?.name}看板</h2>
       <KanbanSearchPanel />
       <ColumContainer>
@@ -18,7 +19,7 @@ const KanbanScreen = () => {
           return <KanbanColum key={kanban.id} kanban={kanban} />;
         })}
       </ColumContainer>
-    </div>
+    </ScreenContainer>
   );
 };
 
@@ -26,5 +27,10 @@ export default KanbanScreen;
 
 const ColumContainer = styled.div`
   display: flex;
-  overflow: hidden;
+  overflow-x: scroll;
+  flex: 1;
+  /* 隐藏滚动条 */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
