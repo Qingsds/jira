@@ -9,24 +9,6 @@ import styled from "@emotion/styled";
 import { useProjectModal, useProjectParams } from "./utils";
 import { ErrorBox, Row } from "components/lib";
 
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  title: string;
-  organization: string;
-  token: string;
-}
-
-export interface Project {
-  id: number;
-  name: string;
-  personId: number;
-  organization: string;
-  pin: boolean;
-  created: number;
-}
-
 const ProjectListScreen = () => {
   const { open } = useProjectModal();
   const [searchParams, setParam] = useProjectParams();

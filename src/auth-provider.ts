@@ -1,6 +1,6 @@
 // 在真实环境中 如果使用firebase则不需要本文件
 
-import { User } from "screens/project-list";
+import { User } from "type/User";
 
 const apiURL = process.env.REACT_APP_API_URL;
 
@@ -8,7 +8,7 @@ const localStorageKey = "__auth_provider_token__";
 
 export const getToken = () => window.localStorage.getItem(localStorageKey);
 
-export const handleUserResponse = ( {user} : {user:User} ) => {
+export const handleUserResponse = ({ user }: { user: User }) => {
   window.localStorage.setItem(localStorageKey, user.token || "");
   return user;
 };

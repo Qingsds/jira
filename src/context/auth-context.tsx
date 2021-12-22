@@ -1,11 +1,11 @@
 import { createContext, ReactNode, useContext } from "react";
 import * as auth from "auth-provider";
-import { User } from "screens/project-list";
 import { http } from "utils/http";
 import { useMount } from "utils";
 import { useAsync } from "utils/use-async";
 import { FullPageErrorCallback, FullPageLoading } from "components/lib";
 import { useQueryClient } from "react-query";
+import { User } from "type/User";
 
 interface AuthForm {
   username: string;

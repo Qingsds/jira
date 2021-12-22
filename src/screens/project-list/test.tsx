@@ -5,7 +5,7 @@ const testClosure = () => {
 
   const effect = () => {
     num += 1;
-    const message = `num value in message：${num}`;
+    const message = `num value in message:${num}`;
 
     return function unmount() {
       console.log(message);

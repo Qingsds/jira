@@ -4,8 +4,9 @@ import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import React from "react";
 import { Link } from "react-router-dom";
+import { Project } from "type/Project";
+import { User } from "type/User";
 import { useDeleteProject, useEditProject } from "utils/project";
-import { Project, User } from ".";
 import { useProjectModal, useProjectQueryKey } from "./utils";
 
 interface ListProps extends TableProps<Project> {
