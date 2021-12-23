@@ -4,13 +4,18 @@ import taskIcon from "assets/task.svg";
 import bugIcon from "assets/bug.svg";
 import { Button, Card, Dropdown, Menu, Modal } from "antd";
 import styled from "@emotion/styled";
-import { useKanbanQueryKey, useTasksModal, useTasksSearchParams } from "./utils";
+import {
+  useKanbanQueryKey,
+  useTasksModal,
+  useTasksSearchParams,
+} from "./utils";
 import { CreateTask } from "./create-task";
 import { nanoid } from "nanoid";
 import { Task } from "type/task";
 import { Mark } from "components/mark";
 import { useDeleteKanban } from "utils/kanban";
 import { Row } from "components/lib";
+import React from "react";
 
 const TaskTypeIcon = ({ id }: { id: number }) => {
   const { data: taskIcons } = useTaskType();
@@ -70,24 +75,26 @@ const More = ({ kanban }: { kanban: Kanban }) => {
   );
 };
 
-export const KanbanColum = ({ kanban }: { kanban: Kanban }) => {
-  const { data: allTasks } = useTasks(useTasksSearchParams());
-  const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
-  return (
-    <Container>
-      <Row between={true}>
-        <h3>{kanban.name}</h3>
-        <More kanban={kanban} />
-      </Row>
-      <TaskContainer>
-        {tasks?.map((task) => {
-          return <TaskCard task={task} key={nanoid()} />;
-        })}
-        <CreateTask kanbanId={kanban.id} />
-      </TaskContainer>
-    </Container>
-  );
-};
+export const KanbanColum = React.forwardRef<HTMLDivElement, { kanban: Kanban }>(
+  ({ kanban, ...props }, ref) => {
+    const { data: allTasks } = useTasks(useTasksSearchParams());
+    const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
+    return (
+      <Container ref={ref} {...props}>
+        <Row between={true}>
+          <h3>{kanban.name}</h3>
+          <More kanban={kanban} />
+        </Row>
+        <TaskContainer>
+          {tasks?.map((task) => {
+            return <TaskCard task={task} key={nanoid()} />;
+          })}
+          <CreateTask kanbanId={kanban.id} />
+        </TaskContainer>
+      </Container>
+    );
+  }
+);
 
 export const Container = styled.div`
   min-width: 27rem;

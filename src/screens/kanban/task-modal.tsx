@@ -34,13 +34,13 @@ export const TaskModal = () => {
   }, [editingTask, form]);
 
   const deleteTask = () => {
-    close();
     Modal.confirm({
       okText: "确认",
       cancelText: "取消",
       title: "确认要删除该项目吗?",
-      onOk: () => del({ id: editingTask.id }),
+      onOk: () => del({ id: Number(editingTaskId) }),
     });
+    close();
   };
   return (
     <Modal
@@ -69,7 +69,7 @@ export const TaskModal = () => {
         </Form.Item>
       </Form>
       <div style={{ textAlign: "right" }}>
-        <Button size={"small"} onClick={deleteTask}>
+        <Button  size={"small"} onClick={deleteTask}>
           删除
         </Button>
       </div>

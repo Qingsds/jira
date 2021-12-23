@@ -1,5 +1,8 @@
 import styled from "@emotion/styled";
+import { Drag, Drop, DropChild } from "components/drag-and-drop";
 import { FullPageLoading, ScreenContainer } from "components/lib";
+import { nanoid } from "nanoid";
+import { DragDropContext } from "react-beautiful-dnd";
 import { useKanban } from "utils/kanban";
 import { useTasks } from "utils/task";
 import { useDocumentTitle } from "utils/title";
@@ -22,27 +25,39 @@ const KanbanScreen = () => {
   const { isLoading: taskIsLoading } = useTasks(useTasksSearchParams());
   const isLoading = taskIsLoading || kanbanIsLoading;
   return (
-    <ScreenContainer>
-      <h2>{currentProject?.name}看板</h2>
-      <KanbanSearchPanel />
-      {isLoading ? (
-        <FullPageLoading />
-      ) : (
-        <ColumContainer>
-          {kanbans.map((kanban, index) => {
-            return <KanbanColum kanban={kanban} key={index} />;
-          })}
-          <CreateKanban />
-        </ColumContainer>
-      )}
-      <TaskModal />
-    </ScreenContainer>
+    <DragDropContext onDragEnd={() => {}}>
+      <ScreenContainer>
+        <h2>{currentProject?.name}看板</h2>
+        <KanbanSearchPanel />
+        {isLoading ? (
+          <FullPageLoading />
+        ) : (
+          <Drop droppableId={"kanban"} type={"COLUMN"} direction={"horizontal"}>
+            <ColumContainer>
+              {kanbans.map((kanban, index) => {
+                return (
+                  <Drag
+                    draggableId={nanoid()}
+                    index={index}
+                    key={index}
+                  >
+                    <KanbanColum kanban={kanban} />
+                  </Drag>
+                );
+              })}
+              <CreateKanban />
+            </ColumContainer>
+          </Drop>
+        )}
+        <TaskModal />
+      </ScreenContainer>
+    </DragDropContext>
   );
 };
 
 export default KanbanScreen;
 
-const ColumContainer = styled.div`
+const ColumContainer = styled(DropChild)`
   display: flex;
   overflow-x: scroll;
   flex: 1;

@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import { useAddProject, useEditProject } from "utils/project";
 import { useProjectModal, useProjectQueryKey } from "./utils";
 
-// TODO React does not recognize the `scrollLocker` prop on a DOM element.
 export const ProjectModal = () => {
   const { projectModalOpen, close, isLoading, editingProject } =
     useProjectModal();
