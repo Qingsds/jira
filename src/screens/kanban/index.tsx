@@ -1,24 +1,41 @@
 import styled from "@emotion/styled";
-import { ScreenContainer } from "components/lib";
+import { FullPageLoading, ScreenContainer } from "components/lib";
 import { useKanban } from "utils/kanban";
+import { useTasks } from "utils/task";
 import { useDocumentTitle } from "utils/title";
+import { CreateKanban } from "./create-kanban";
 import { KanbanColum } from "./kanban-colum";
 import { KanbanSearchPanel } from "./search-panel";
-import { useKanbanSearchParams, useProjectInUrl } from "./utils";
+import { TaskModal } from "./task-modal";
+import {
+  useKanbanSearchParams,
+  useProjectInUrl,
+  useTasksSearchParams,
+} from "./utils";
 
 const KanbanScreen = () => {
   useDocumentTitle("看板列表");
   const { data: currentProject } = useProjectInUrl();
-  const { data: kanbans = [] } = useKanban(useKanbanSearchParams());
+  const { data: kanbans = [], isLoading: kanbanIsLoading } = useKanban(
+    useKanbanSearchParams()
+  );
+  const { isLoading: taskIsLoading } = useTasks(useTasksSearchParams());
+  const isLoading = taskIsLoading || kanbanIsLoading;
   return (
     <ScreenContainer>
       <h2>{currentProject?.name}看板</h2>
       <KanbanSearchPanel />
-      <ColumContainer>
-        {kanbans.map((kanban) => {
-          return <KanbanColum key={kanban.id} kanban={kanban} />;
-        })}
-      </ColumContainer>
+      {isLoading ? (
+        <FullPageLoading />
+      ) : (
+        <ColumContainer>
+          {kanbans.map((kanban, index) => {
+            return <KanbanColum kanban={kanban} key={index} />;
+          })}
+          <CreateKanban />
+        </ColumContainer>
+      )}
+      <TaskModal />
     </ScreenContainer>
   );
 };
@@ -29,8 +46,4 @@ const ColumContainer = styled.div`
   display: flex;
   overflow-x: scroll;
   flex: 1;
-  /* 隐藏滚动条 */
-  ::-webkit-scrollbar {
-    display: none;
-  }
 `;

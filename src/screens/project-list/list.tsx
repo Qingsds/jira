@@ -2,6 +2,7 @@ import { Button, Dropdown, Menu, Modal, Table } from "antd";
 import { TableProps } from "antd/lib/table";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
+import { nanoid } from "nanoid";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Project } from "type/Project";
@@ -21,7 +22,7 @@ const List: React.FC<ListProps> = ({ users, ...res }) => {
     <Table
       pagination={false}
       /* rowKey不加会报错 */
-      rowKey={(record) => record.id}
+      rowKey={(project) => nanoid()}
       columns={[
         {
           title: <Pin checked={true} disabled={true} />,
