@@ -48,7 +48,7 @@ export const useDeleteProject = (queryKey: QueryKey) => {
 
 export const useProject = (id?: number) => {
   const client = useHttp();
-  return useQuery([`project`, { id }], () => client(`projects/${id}`), {
+  return useQuery<Project>([`project`, { id }], () => client(`projects/${id}`), {
     enabled: Boolean(id),
   });
 };

@@ -44,7 +44,7 @@ export const useEditTask = (queryKey: QueryKey) => {
 
 export const useTask = (id?: number) => {
   const client = useHttp();
-  return useQuery([`task`, { id }], () => client(`tasks/${id}`), {
+  return useQuery<Task>([`task`, { id }], () => client(`tasks/${id}`), {
     enabled: Boolean(id),
   });
 };
