@@ -16,6 +16,7 @@ import { Mark } from "components/mark";
 import { useDeleteKanban } from "utils/kanban";
 import { Row } from "components/lib";
 import React from "react";
+import { Drag, Drop, DropChild } from "components/drag-and-drop";
 
 const TaskTypeIcon = ({ id }: { id: number }) => {
   const { data: taskIcons } = useTaskType();
@@ -28,7 +29,7 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
   }
 };
 
-const TaskCard = ({ task }: { task: Task }) => {
+const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
   const { startEdit } = useTasksModal();
   const { name: keyword } = useTasksSearchParams();
   return (
@@ -86,9 +87,27 @@ export const KanbanColum = React.forwardRef<HTMLDivElement, { kanban: Kanban }>(
           <More kanban={kanban} />
         </Row>
         <TaskContainer>
-          {tasks?.map((task) => {
-            return <TaskCard task={task} key={nanoid()} />;
-          })}
+          <Drop
+            droppableId={String(kanban.id)}
+            type={"ROW"}
+            direction={"vertical"}
+          >
+            <DropChild style={{ minHeight: "5px" }}>
+              {tasks?.map((task, index) => {
+                return (
+                  <Drag
+                    draggableId={String(task.id)}
+                    index={index}
+                    key={task.id}
+                  >
+                    <div {...props}>
+                      <TaskCard task={task} />
+                    </div>
+                  </Drag>
+                );
+              })}
+            </DropChild>
+          </Drop>
           <CreateTask kanbanId={kanban.id} />
         </TaskContainer>
       </Container>
