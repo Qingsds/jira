@@ -9,7 +9,8 @@ import ProjectScreen from "screens/project";
 import { resetRoute } from "utils";
 import styled from "@emotion/styled";
 import { ProjectModal } from "screens/project-list/project-modal";
-import { BoldSpan, ProjectPopover } from "components/project-popover";
+import { ProjectPopover } from "components/project-popover";
+import { UsersPopover } from "components/user-popover";
 const AuthenticatedScreen = () => {
   return (
     <Router>
@@ -38,7 +39,7 @@ const HeaderScreen = () => {
           <SoftwareLog width={"13rem"} color={"rgb(38,132,255)"} />
         </ButtonWithNoPadding>
         <ProjectPopover />
-        <BoldSpan>名称</BoldSpan>
+        <UsersPopover />
       </HeaderLeft>
       <HeaderRight>
         <User />
