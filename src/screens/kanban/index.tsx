@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Drag, Drop, DropChild } from "components/drag-and-drop";
 import { FullPageLoading, ScreenContainer } from "components/lib";
+import { Profiler } from "components/profiler";
 import { useCallback } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useKanban, useReorderKanban } from "utils/kanban";
@@ -28,39 +29,41 @@ const KanbanScreen = () => {
   const isLoading = taskIsLoading || kanbanIsLoading;
   const onDragEnd = useDregEnd();
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <ScreenContainer>
-        <h2>{currentProject?.name}看板</h2>
-        <KanbanSearchPanel />
-        {isLoading ? (
-          <FullPageLoading />
-        ) : (
-          <ColumContainer>
-            <Drop
-              droppableId={"kanban"}
-              type={"COLUMN"}
-              direction={"horizontal"}
-            >
-              <DropChild style={{ display: "flex" }}>
-                {kanbans.map((kanban, index) => {
-                  return (
-                    <Drag
-                      draggableId={String(kanban.id)}
-                      index={index}
-                      key={kanban.id}
-                    >
-                      <KanbanColum kanban={kanban} />
-                    </Drag>
-                  );
-                })}
-              </DropChild>
-            </Drop>
-            <CreateKanban />
-          </ColumContainer>
-        )}
-        <TaskModal />
-      </ScreenContainer>
-    </DragDropContext>
+    <Profiler id={"看板列表"}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <ScreenContainer>
+          <h2>{currentProject?.name}看板</h2>
+          <KanbanSearchPanel />
+          {isLoading ? (
+            <FullPageLoading />
+          ) : (
+            <ColumContainer>
+              <Drop
+                droppableId={"kanban"}
+                type={"COLUMN"}
+                direction={"horizontal"}
+              >
+                <DropChild style={{ display: "flex" }}>
+                  {kanbans.map((kanban, index) => {
+                    return (
+                      <Drag
+                        draggableId={String(kanban.id)}
+                        index={index}
+                        key={kanban.id}
+                      >
+                        <KanbanColum kanban={kanban} />
+                      </Drag>
+                    );
+                  })}
+                </DropChild>
+              </Drop>
+              <CreateKanban />
+            </ColumContainer>
+          )}
+          <TaskModal />
+        </ScreenContainer>
+      </DragDropContext>
+    </Profiler>
   );
 };
 
@@ -98,7 +101,6 @@ export const useDregEnd = () => {
           destination.index
         ];
         if (fromTask?.id === toTask?.id) {
-          console.log(fromTask?.id, toTask?.id);
           return;
         }
         reorderTask({

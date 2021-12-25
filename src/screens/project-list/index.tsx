@@ -8,6 +8,7 @@ import { useDocumentTitle } from "utils/title";
 import styled from "@emotion/styled";
 import { useProjectModal, useProjectParams } from "./utils";
 import { ErrorBox, Row } from "components/lib";
+import { Profiler } from "components/profiler";
 
 const ProjectListScreen = () => {
   const { open } = useProjectModal();
@@ -20,7 +21,8 @@ const ProjectListScreen = () => {
   const { data: users } = useUsers();
   useDocumentTitle("项目列表");
   return (
-    <Container>
+    <Profiler id={'项目列表'}>
+          <Container>
       <Row between={true}>
         <h1>项目列表</h1>
         <Button onClick={() => open()}>创建项目</Button>
@@ -37,6 +39,7 @@ const ProjectListScreen = () => {
         loading={isLoading}
       />
     </Container>
+    </Profiler>
   );
 };
 

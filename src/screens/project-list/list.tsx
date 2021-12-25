@@ -3,7 +3,7 @@ import { TableProps } from "antd/lib/table";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import { nanoid } from "nanoid";
-import React from "react";
+import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import { Project } from "type/Project";
 import { User } from "type/User";
@@ -14,7 +14,7 @@ interface ListProps extends TableProps<Project> {
   users: User[];
 }
 
-const List: React.FC<ListProps> = ({ users, ...res }) => {
+const List: React.FC<ListProps> = memo(({ users, ...res }) => {
   const { mutate } = useEditProject(useProjectQueryKey());
   /* 函数的柯里化 */
   const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
@@ -77,7 +77,7 @@ const List: React.FC<ListProps> = ({ users, ...res }) => {
       {...res}
     />
   );
-};
+});
 
 export default List;
 
