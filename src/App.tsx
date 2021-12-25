@@ -1,17 +1,22 @@
-import AuthenticatedScreen from "authenticated";
+// import AuthenticatedScreen from "authenticated";
+// import UnauthenticatedScreen from "unauthenticated-app";
 import { ErrorBoundary } from "components/err-boundary";
-import { FullPageErrorCallback } from "components/lib";
+import { FullPageErrorCallback, FullPageLoading } from "components/lib";
 import { useAuth } from "context/auth-context";
-import UnauthenticatedScreen from "unauthenticated-app";
+import React from "react";
 
+const AuthenticatedScreen = React.lazy(() => import("authenticated"));
+const UnauthenticatedScreen = React.lazy(() => import("unauthenticated-app"));
 
 function App() {
   const { user } = useAuth();
   return (
     <div className="App">
       <ErrorBoundary fallbackRender={FullPageErrorCallback}>
-      {user ? <AuthenticatedScreen /> : <UnauthenticatedScreen />}
-      </ErrorBoundary >
+        <React.Suspense fallback={<FullPageLoading />}>
+          {user ? <AuthenticatedScreen /> : <UnauthenticatedScreen />}
+        </React.Suspense>
+      </ErrorBoundary>
     </div>
   );
 }
