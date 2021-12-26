@@ -2,7 +2,7 @@ import { useAsync } from "utils/use-async";
 import { act, renderHook } from "@testing-library/react-hooks";
 
 const defaultState: ReturnType<typeof useAsync> = {
-  stat: "idle",
+  state: "idle",
   data: null,
   error: null,
 
@@ -19,14 +19,14 @@ const defaultState: ReturnType<typeof useAsync> = {
 
 const loadingState: ReturnType<typeof useAsync> = {
   ...defaultState,
-  stat: "loading",
+  state: "loading",
   isIdle: false,
   isLoading: true,
 };
 
 const successState: ReturnType<typeof useAsync> = {
   ...defaultState,
-  stat: "success",
+  state: "success",
   isIdle: false,
   isSuccess: true,
 };
