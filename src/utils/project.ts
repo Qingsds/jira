@@ -1,5 +1,6 @@
 import { QueryKey, useMutation, useQuery } from "react-query";
 import { Project } from "type/Project";
+import { cleanObject } from "utils";
 import { useHttp } from "./http";
 import {
   useAddConfig,
@@ -9,7 +10,7 @@ import {
 
 export const useProjects = (params?: Partial<Project>) => {
   const client = useHttp();
-  return useQuery<Project[]>(["projects", params], () =>
+  return useQuery<Project[]>(["projects", cleanObject(params)], () =>
     client("projects", { data: params })
   );
 };
@@ -29,7 +30,7 @@ export const useAddProject = (queryKey: QueryKey) => {
     (param: Partial<Project>) =>
       client(`projects`, {
         method: "POST",
-        data:param,
+        data: param,
       }),
     useAddConfig(queryKey)
   );
@@ -48,7 +49,11 @@ export const useDeleteProject = (queryKey: QueryKey) => {
 
 export const useProject = (id?: number) => {
   const client = useHttp();
-  return useQuery<Project>([`project`, { id }], () => client(`projects/${id}`), {
-    enabled: Boolean(id),
-  });
+  return useQuery<Project>(
+    [`project`, { id }],
+    () => client(`projects/${id}`),
+    {
+      enabled: Boolean(id),
+    }
+  );
 };

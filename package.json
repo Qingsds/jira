@@ -61,7 +61,7 @@
     "@types/qs": "^6.9.7",
     "@types/react-beautiful-dnd": "13.0.0",
     "json-server": "^0.17.0",
-    "msw": "^0.28.1",
+    "msw": "^0.36.3",
     "prettier": "2.5.1"
   }
 }
